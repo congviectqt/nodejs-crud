@@ -1,9 +1,15 @@
-const express = require("express");
 const mongoDb = require("../../config/connectdb");
 const { body, validationResult } = require("express-validator");
-const index = (req, res) => {
+
+const index = async (req, res) => {
   const db = mongoDb.getDb();
-  res.render("layout.ejs", { title: "Category", layout: "category/index" });
+  const category = db.collection("category");
+  const listCat = await category.find().toArray();
+  res.render("layout.ejs", {
+    title: "Category",
+    layout: "category/index",
+    listCat: listCat,
+  });
 };
 
 const createCategory = (req, res) => {
@@ -42,9 +48,14 @@ const createCategory = (req, res) => {
   }
 };
 
-const editCategory = (req, res) => {
-  
-};
+// const editCategory = (req, res) => {
+//   res.render("layout.ejs", {
+//     title: "Create new categroy",
+//     layout: "category/createCategory",
+//     error: false,
+//     varForm: {},
+//   });
+// };
 
 const validate = (method) => {
   switch (method) {
