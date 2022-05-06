@@ -1,0 +1,36 @@
+<% if(error) { error.forEach(item => { %>
+<p class="alert alert-danger"><%= item.msg %></p>
+<% }); } %>
+
+<form action="/createCategory" method="post">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Name</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      aria-describedby="name"
+      value="<%= varForm.name %>"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Description</label>
+    <textarea
+      name="description"
+      class="form-control"
+      aria-describedby="description"
+    >
+  <%= varForm.description %></textarea
+    >
+  </div>
+  <div class="mb-3 form-check">
+    <label>Trạng thái</label>
+    <input
+      type="checkbox"
+      name="status"
+      class="form-check-input"
+      id="exampleCheck1"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
