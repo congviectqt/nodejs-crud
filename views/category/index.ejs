@@ -1,5 +1,7 @@
 <a href="/createCategory">Create Category</a>
-<% //console.log(`xxxxxxxxx`,listCat); %>
+<% if (message.length > 0) { %>
+<p class="alert alert-success"><%= message %></p>
+<% } %>
 <table class="table">
   <thead>
     <tr>
@@ -10,13 +12,13 @@
     </tr>
   </thead>
   <tbody>
-    <% listCat.forEach((item)=> { %>
+    <% var stt = 1; listCat.forEach((item)=> { %>
     <tr>
-      <th scope="row"><%= item._id %></th>
-      <td><%= item.name %></td>
+      <th scope="row"><%= stt %></th>
+      <td><a href="/editCategory/<%= item._id %>"><%= item.name %></a></td>
       <td><%= item.description %></td>
       <td><%= item.status %></td>
     </tr>
-    <% }) %>
+    <% stt++; }) %>
   </tbody>
 </table>

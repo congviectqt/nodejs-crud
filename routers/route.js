@@ -10,6 +10,13 @@ router.post(
   category.validate("createCategory"),
   category.createCategory
 );
+
+router.get("/editCategory/:id", category.editCategory);
+router.post(
+  "/editCategory",
+  category.validate("createCategory"),
+  category.editCategory
+);
 //Static page
 router.get("/about", pageAbout.index);
 router.get("/contact", pageContact.index);

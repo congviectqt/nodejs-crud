@@ -1,6 +1,8 @@
 const mongoDb = require("../../config/connectdb");
+var ObjectId = require("mongodb").ObjectID;
 const { body, validationResult } = require("express-validator");
 
+//read
 const index = async (req, res) => {
   const db = mongoDb.getDb();
   const category = db.collection("category");
@@ -9,18 +11,21 @@ const index = async (req, res) => {
     title: "Category",
     layout: "category/index",
     listCat: listCat,
+    message: req.flash("message"),
   });
 };
 
+//create
 const createCategory = (req, res) => {
   const errors = validationResult(req);
-
+  const actionForm = "createCategory";
   if (!errors.isEmpty()) {
     const { name, description, status } = req.body;
     const varForm = {
       name: name,
       description: description,
       status: status,
+      actionForm: actionForm,
     };
     res.render("layout.ejs", {
       title: "Create new categroy",
@@ -44,18 +49,43 @@ const createCategory = (req, res) => {
       layout: "category/createCategory",
       error: false,
       varForm: {},
+      actionForm: actionForm,
     });
   }
 };
 
-// const editCategory = (req, res) => {
-//   res.render("layout.ejs", {
-//     title: "Create new categroy",
-//     layout: "category/createCategory",
-//     error: false,
-//     varForm: {},
-//   });
-// };
+//update
+const editCategory = async (req, res) => {
+  const actionForm = "editCategory";
+  const db = mongoDb.getDb();
+  const category = db.collection("category");
+  if (req.body.submit) {
+    console.log(`UPDATE`);
+    await category.updateOne(
+      { _id: ObjectId(req.body.id) },
+      {
+        $set: {
+          name: req.body.name,
+          description: req.body.description,
+          status: req.body.status,
+        },
+      }
+    );
+    req.flash("message", "Edit successfully");
+    res.redirect("/category");
+  } else {
+    const query = { _id: ObjectId(req.params.id) };
+    const itemCat = await category.findOne(query, {});
+    itemCat.id = req.params.id;
+    res.render("layout.ejs", {
+      title: "Create new categroy",
+      layout: "category/createCategory",
+      error: false,
+      varForm: itemCat,
+      actionForm: actionForm,
+    });
+  }
+};
 
 const validate = (method) => {
   switch (method) {
@@ -81,5 +111,6 @@ const validate = (method) => {
 module.exports = {
   index,
   createCategory,
+  editCategory,
   validate,
 };
