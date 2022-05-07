@@ -17,6 +17,8 @@ router.post(
   category.validate("createCategory"),
   category.editCategory
 );
+
+router.get("/delCategory/:id", category.delCategory);
 //Static page
 router.get("/about", pageAbout.index);
 router.get("/contact", pageContact.index);

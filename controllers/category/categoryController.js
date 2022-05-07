@@ -87,6 +87,16 @@ const editCategory = async (req, res) => {
   }
 };
 
+const delCategory = (req, res) => {
+  if (req.params.id) {
+    const db = mongoDb.getDb();
+    const category = db.collection("category");
+    category.deleteOne({ _id: ObjectId(req.params.id) });
+    req.flash("message", "Delete sucessfully");
+    res.redirect("/category");
+  }
+};
+
 const validate = (method) => {
   switch (method) {
     case "createCategory": {
@@ -112,5 +122,6 @@ module.exports = {
   index,
   createCategory,
   editCategory,
+  delCategory,
   validate,
 };
