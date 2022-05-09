@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", require("./routers/route"));
-
+app.use(express.static("public"));
 //Routes
 
 mongoDb.connectToServer(function (err) {

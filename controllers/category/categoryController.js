@@ -4,9 +4,24 @@ const { body, validationResult } = require("express-validator");
 
 //read
 const index = async (req, res) => {
+  // Print new id to the console
   const db = mongoDb.getDb();
   const category = db.collection("category");
   const listCat = await category.find().toArray();
+  //Xóa nhiều item.
+  if (req.body.delBatch) {
+    console.log(req.body.item);
+    req.body.item.forEach(async (element) => {
+      await category.deleteMany({
+        _id: {
+          $in: [ObjectId(element)],
+        },
+      });
+    });
+    req.flash("message", "Delete sucessfully");
+    res.redirect("/category");
+    return;
+  }
   res.render("layout.ejs", {
     title: "Category",
     layout: "category/index",

@@ -4,6 +4,7 @@ const pageAbout = require("../controllers/page/aboutController");
 const pageContact = require("../controllers/page/contactController");
 const router = express.Router();
 router.get("/category", category.index);
+router.post("/category", category.index);
 router.get("/createCategory", category.createCategory);
 router.post(
   "/createCategory",
