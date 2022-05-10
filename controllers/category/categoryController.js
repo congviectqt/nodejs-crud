@@ -31,7 +31,7 @@ const index = async (req, res) => {
 };
 
 //create
-const createCategory = (req, res) => {
+const createCategory = async (req, res) => {
   const errors = validationResult(req);
   const actionForm = "createCategory";
   if (!errors.isEmpty()) {
@@ -50,22 +50,21 @@ const createCategory = (req, res) => {
     });
     return;
   } else {
-    const db = mongoDb.getDb();
-    const category = db.collection("category");
-
-    category
-      .insertOne(req.body)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => console.error(error));
-    res.render("layout.ejs", {
-      title: "Create new categroy",
-      layout: "category/createCategory",
-      error: false,
-      varForm: {},
-      actionForm: actionForm,
-    });
+    if (req.body.submit) {
+      const db = mongoDb.getDb();
+      const category = db.collection("category");
+      await category.insertOne(req.body);
+      req.flash("message", "Create sucessfully");
+      res.redirect("/category");
+    } else {
+      res.render("layout.ejs", {
+        title: "Create new categroy",
+        layout: "category/createCategory",
+        error: false,
+        varForm: {},
+        actionForm: actionForm,
+      });
+    }
   }
 };
 
