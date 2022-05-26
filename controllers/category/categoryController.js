@@ -54,6 +54,7 @@ const createCategory = async (req, res) => {
       const db = mongoDb.getDb();
       const category = db.collection("category");
       await category.insertOne(req.body);
+      // post.create(req.body);
       req.flash("message", "Create sucessfully");
       res.redirect("/category");
     } else {

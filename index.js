@@ -3,6 +3,7 @@ const app = express();
 const mongoDb = require("./config/connectdb");
 const session = require("express-session");
 const flash = require("connect-flash");
+const path = require("path");
 app.use(flash());
 app.use(
   session({
@@ -17,12 +18,13 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", require("./routers/route"));
 app.use(express.static("public"));
-//Routes
-
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 mongoDb.connectToServer(function (err) {
   app.get("/", (req, res) => {
     console.log(`session`, req.session);
-    const db = mongoDb.getDb();
     res.render("layout.ejs", { layout: "", title: "Home" });
   });
 
