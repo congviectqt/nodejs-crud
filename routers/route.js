@@ -3,7 +3,7 @@ const category = require("../controllers/category/categoryController");
 const pageAbout = require("../controllers/page/aboutController");
 const pageContact = require("../controllers/page/contactController");
 const post = require("../controllers/post/postController");
-const media = require("../controllers/media/mediaController");
+const media = require("../mediaController");
 const router = express.Router();
 router.get("/category", category.index);
 router.post("/category", category.index);
